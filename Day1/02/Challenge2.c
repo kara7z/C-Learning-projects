@@ -20,8 +20,6 @@ int main() {
       
     if (Quantity>1){
     result = price + (Quantity - 1) * price * 0.98;
-    // result = result - result*(1-0.02*price);
-    // - Quantity * price* 0.02;
     printf("You have to pay: %.2f DHS",result);
     }
        
@@ -31,7 +29,4 @@ int main() {
     printf("You have to pay: %.2f DHS",result);
     }
     return 0;
-    
-    
-    // 2% = 0.02
 }
