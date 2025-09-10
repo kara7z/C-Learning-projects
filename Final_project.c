@@ -9,23 +9,28 @@ typedef struct
     char name[MAXVALUE];
     char fName[MAXVALUE];
     int plyrNumber;
-    char position[MAXVALUE];
-    // {"goalkeeper","defender", "midfielder", "Attacker"}
+    char position[MAXVALUE]; // {"goalkeeper","defender", "midfielder", "Attacker"}
     int age;
     int goalsNum;
     int Id;
 
 } player;
-void addPlayer(int *counter, player player[MAXVALUE], bool *PlyrNumChecker);
 
-void idgenerator(int *playerId);
+void addPlayer(int *counter, player player[MAXVALUE], bool *PlyrNumChecker); // fonction of adding players
 
+void idgenerator(int *playerId); // fonction of ID maker
+
+int idSearch(int *counter, player player[MAXVALUE]); // fonction of searching for players
+
+int nameSearch(int *counter, player player[MAXVALUE]);
 int main()
 {
 
     int mainChoice, addChoice, counter = 0, playerIndex[MAXVALUE];
 
     bool appStatus = true, addStatus = true, PlyrNumChecker = true;
+    
+
     player player[MAXVALUE];
 
     while (appStatus)
@@ -101,13 +106,59 @@ int main()
 
             break;
         case 2:
-        
+            printf("There are %d players:\n", counter);
+
             break;
         case 3:
             break;
         case 4:
             break;
         case 5:
+                    int search0Choice;
+                    
+
+        
+            printf("1.Search by ID");
+            printf("\n2.Search by Name");
+            printf("\n0.back\n");
+          
+            printf("\033[1;33m");
+            printf("Your Choice is: ");
+            printf("\033[0m");
+          
+            scanf("%d", &search0Choice);
+            getchar();
+
+          
+            if (counter == 0)
+            {
+                printf("\033[0;31m");
+                printf("You need to add players, no player founded");
+                printf("\033[0m\n");
+            }
+            else if (search0Choice == 1)
+            {
+                idSearch(&counter, player );
+                
+
+            }
+            else if (search0Choice == 2)
+            {
+                nameSearch(&counter, player);
+            }
+            else if (search0Choice == 0)
+            {
+                printf("wait...");
+                addStatus = false;
+                Sleep(500);
+            }
+            else
+            {
+                printf("\033[0;31m");
+                printf("invalide option");
+                printf("\033[0m\n");
+            }
+
             break;
         case 6:
             break;
@@ -125,15 +176,41 @@ int main()
         }
     }
 }
-int search(int *counter, player player[MAXVALUE])
+int idSearch(int *counter, player player[MAXVALUE])
 {
-    int sizePlayers = sizeof(player[*counter])/sizeof(player[0]);
+    int search0Value ;
+    int isSearching = true;
+    printf("There are %d players\n", *counter);
+    while (isSearching)
+    {
+        printf("Enter The ID of the player: ");
+        for (int i = 0; i < *counter; i++)
+        {
+            if (search0Value == player[i].Id)
+            {
+                printf("The Player Full Name is: %s %s\n",player[i].fName, player[i].name);
+                printf("The Player Number is: %d\n",player[i].plyrNumber);
+                printf("The Player Position is: %s\n",player[i].position);
+                printf("The Player Age is: %d\n",player[i].age);
+                printf("The Player Score %d Goals\n",player[i].goalsNum);
 
-    for(int i =0;i<sizePlayers ;i++){
-        if(sizePlayers==0){
-            printf("You need to add players, no player founded");
+            }
+            
+            
+
         }
-
+    }
+}
+int nameSearch(int *counter, player player[MAXVALUE])
+{
+    int isSearching = true;
+    printf("There are %d players\n", *counter);
+    while (isSearching)
+    {
+        
+        for (int i = 0; i < *counter; i++)
+        {
+        }
     }
 }
 void idgenerator(int *playerId)
@@ -177,78 +254,55 @@ void addPlayer(int *counter, player player[MAXVALUE], bool *PlyrNumChecker)
             }
         }
         char respond0p;
-        printf("\nFor choosing the player position press:\n");
-        printf("\"g\" for the goalkeeper\n ");
-        printf("\"d\" for the defender\n");
-        printf("\"m\" for the midfielder\n");
-        printf("\"a\" for the Attacker\n");
-        printf("\033[1;33m");
-        printf("Your Choice is: ");
-        printf("\033[0m");
-
-        scanf("%c", &respond0p);
-        getchar();
-
-        //{"goalkeeper","defender", "midfielder", "Attacker"}
         bool checker0p = true;
-        if (respond0p == 'g' || respond0p == 'G' ||
-            respond0p == 'd' || respond0p == 'D' ||
-            respond0p == 'm' || respond0p == 'M' ||
-            respond0p == 'a' || respond0p == 'A')
-        {
-            checker0p = false;
-        }
-        else
-        {
-            checker0p = true;
-        }
 
         while (checker0p)
         {
-            if (respond0p == 'g' || respond0p == 'G' ||
-                respond0p == 'd' || respond0p == 'D' ||
-                respond0p == 'm' || respond0p == 'M' ||
-                respond0p == 'a' || respond0p == 'A')
-            {
-                checker0p = false;
-                break;
-            }
 
             printf("\nFor choosing the player position press:\n");
-            printf("\"g\" for the goalkeeper\n ");
-            printf("\"d\" for the defender\n");
-            printf("\"m\" for the midfielder\n");
-            printf("\"a\" for the Attacker\n");
+            printf("\"G\" for the goalkeeper\n");
+            printf("\"D\" for the defender\n");
+            printf("\"M\" for the midfielder\n");
+            printf("\"A\" for the Attacker\n");
             printf("\033[1;33m");
             printf("Your Choice is: ");
             printf("\033[0m");
 
             scanf("%c", &respond0p);
             getchar();
+            respond0p = tolower(respond0p);
+            switch (respond0p)
+            {
+            case 'g':
+                strcpy(player[*counter].position, position1);
+                checker0p = false;
+                break;
+
+            case 'd':
+                strcpy(player[*counter].position, position2);
+                checker0p = false;
+                break;
+
+            case 'm':
+                strcpy(player[*counter].position, position3);
+
+                checker0p = false;
+                break;
+            case 'a':
+                strcpy(player[*counter].position, position4);
+
+                checker0p = false;
+                break;
+
+            default:
+                checker0p = true;
+                printf("\033[0;31m");
+                printf("invalide option");
+                printf("\033[0m\n");
+                break;
+            }
         }
-        switch (respond0p)
-        {
-        case 'g':
-            strcasecmp(player[*counter].position, position1);
-            break;
 
-        case 'd':
-            strcasecmp(player[*counter].position, position2);
-            break;
-
-        case 'm':
-            strcasecmp(player[*counter].position, position3);
-
-            break;
-        case 'a':
-            strcasecmp(player[*counter].position, position4);
-
-            break;
-
-        default:
-            printf("invalide choice");
-            break;
-        }
         int checker0age = true;
 
         printf("Enter the age of this player: ");
@@ -272,7 +326,7 @@ void addPlayer(int *counter, player player[MAXVALUE], bool *PlyrNumChecker)
         }
         int checker0goals = true;
 
-        printf("Enter how many goals %s score: ",player[*counter].name);
+        printf("Enter how many goals %s score: ", player[*counter].name);
         scanf("%d", &player[*counter].goalsNum);
         getchar();
 
@@ -294,7 +348,7 @@ void addPlayer(int *counter, player player[MAXVALUE], bool *PlyrNumChecker)
         idgenerator(&player[*counter].Id);
 
         printf("\x1b[32m");
-        printf("player ID: %d\n", player[*counter].Id);
+        printf("%s %s ID is: %d\n", player[*counter].name, player[*counter].fName, player[*counter].Id);
         printf("\033[0m");
 
         (*counter)++;
