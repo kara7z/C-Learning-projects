@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "functional": "c"
+        "functional": "c",
+        "stdio.h": "c",
+        "text_encoding": "c",
+        "typeinfo": "c"
     }
 }
