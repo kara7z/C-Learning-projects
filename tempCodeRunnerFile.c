@@ -1,1 +1,3 @@
-        player[*counter].fName[strlen(player[*counter].fName) - 1] = '\0';
+ // temp = players[i];
+            // players[i] = players[j];
+            // players[j] = temp;
