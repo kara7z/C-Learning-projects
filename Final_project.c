@@ -23,13 +23,13 @@ void idgenerator(int *playerId); // fonction of ID maker
 int idSearch(int *counter, player player[MAXVALUE]); // fonction of searching for players
 
 int nameSearch(int *counter, player player[MAXVALUE]);
+
 int main()
 {
 
     int mainChoice, addChoice, counter = 0, playerIndex[MAXVALUE];
 
     bool appStatus = true, addStatus = true, PlyrNumChecker = true;
-    
 
     player player[MAXVALUE];
 
@@ -106,7 +106,47 @@ int main()
 
             break;
         case 2:
-            printf("There are %d players:\n", counter);
+
+            int show0Choice;
+            if (counter == 0)
+            {
+                printf("\033[0;31m");
+                printf("You need to add players, no player founded");
+                printf("\033[0m\n");
+            }
+            else
+            {
+                printf("There are %d players:\n", counter);
+                printf("1.Sort players alphabetically (name)");
+                printf("\n2.Sort players by age");
+                printf("\n3.Show players by position");
+                printf("\n0.back\n");
+
+                printf("\033[1;33m");
+                printf("Your Choice is: ");
+                printf("\033[0m");
+
+                scanf("%d", &show0Choice);
+                getchar();
+                
+
+
+            }
+
+            switch (show0Choice)
+            {
+            case 1:
+
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 0:
+                printf("wait...");
+                Sleep(500);
+                break;
+            }
 
             break;
         case 3:
@@ -114,22 +154,19 @@ int main()
         case 4:
             break;
         case 5:
-                    int search0Choice;
-                    
+            int search0Choice;
 
-        
             printf("1.Search by ID");
             printf("\n2.Search by Name");
             printf("\n0.back\n");
-          
+
             printf("\033[1;33m");
             printf("Your Choice is: ");
             printf("\033[0m");
-          
+
             scanf("%d", &search0Choice);
             getchar();
 
-          
             if (counter == 0)
             {
                 printf("\033[0;31m");
@@ -138,13 +175,29 @@ int main()
             }
             else if (search0Choice == 1)
             {
-                idSearch(&counter, player );
-                
 
+                int index = idSearch(&counter, player);
+                if (index != -1)
+                {
+                    printf("\nPlayer-Full Name is: %s %s\n", player[index].fName, player[index].name);
+                    printf("Player-Number is: %d\n", player[index].plyrNumber);
+                    printf("Player-Position is: %s\n", player[index].position);
+                    printf("Player-Age is: %d\n", player[index].age);
+                    printf("Player-Score %d Goals\n", player[index].goalsNum);
+                }
             }
             else if (search0Choice == 2)
             {
-                nameSearch(&counter, player);
+                int index = nameSearch(&counter, player);
+                if (index != -1)
+                {
+                    printf("\nPlayer-ID is: %d\n", player[index].Id);
+                    printf("Player-Full Name is: %s %s\n", player[index].fName, player[index].name);
+                    printf("Player-Number is: %d\n", player[index].plyrNumber);
+                    printf("Player-Position is: %s\n", player[index].position);
+                    printf("Player-Age is: %d\n", player[index].age);
+                    printf("Player-Score %d Goals\n", player[index].goalsNum);
+                }
             }
             else if (search0Choice == 0)
             {
@@ -178,39 +231,67 @@ int main()
 }
 int idSearch(int *counter, player player[MAXVALUE])
 {
-    int search0Value ;
-    int isSearching = true;
+    int idSearch0Value;
+    bool isSearching = true;
+
     printf("There are %d players\n", *counter);
     while (isSearching)
     {
         printf("Enter The ID of the player: ");
+        scanf("%d", &idSearch0Value);
+        getchar();
+
+        bool idNotFounded = false;
+
         for (int i = 0; i < *counter; i++)
         {
-            if (search0Value == player[i].Id)
+            if (idSearch0Value == player[i].Id)
             {
-                printf("The Player Full Name is: %s %s\n",player[i].fName, player[i].name);
-                printf("The Player Number is: %d\n",player[i].plyrNumber);
-                printf("The Player Position is: %s\n",player[i].position);
-                printf("The Player Age is: %d\n",player[i].age);
-                printf("The Player Score %d Goals\n",player[i].goalsNum);
 
+                return i;
+                idNotFounded = true;
             }
-            
-            
-
         }
+        if (!idNotFounded)
+        {
+            printf("\033[0;31m");
+            printf("The player ID was not founded in the list");
+            printf("\033[0m\n");
+            return -1;
+        }
+        isSearching = false;
     }
 }
 int nameSearch(int *counter, player player[MAXVALUE])
 {
-    int isSearching = true;
+    char nSearch0Value[MAXVALUE];
+    bool isSearching = true;
+
     printf("There are %d players\n", *counter);
     while (isSearching)
     {
-        
+        printf("Enter your player name: ");
+        fgets(nSearch0Value, sizeof(nSearch0Value), stdin);
+        nSearch0Value[strlen(nSearch0Value) - 1] = '\0';
+
+        bool nNotFounded = false;
+
         for (int i = 0; i < *counter; i++)
         {
+            if (strcasecmp(nSearch0Value, player[i].name) == 0)
+            {
+                return i;
+                nNotFounded = true;
+            }
         }
+        if (!nNotFounded)
+        {
+            printf("\033[0;31m");
+            printf("The player name was not founded in the list");
+            printf("\033[0m\n");
+            return -1;
+        }
+        isSearching = false;
     }
 }
 void idgenerator(int *playerId)
@@ -221,9 +302,9 @@ void idgenerator(int *playerId)
 }
 void addPlayer(int *counter, player player[MAXVALUE], bool *PlyrNumChecker)
 {
-    char position1[] = "goalkeeper";
-    char position2[] = "defender";
-    char position3[] = "midfielder";
+    char position1[] = "Goalkeeper";
+    char position2[] = "Defender";
+    char position3[] = "Midfielder";
     char position4[] = "Attacker";
     if (*counter < MAXVALUE)
     {
