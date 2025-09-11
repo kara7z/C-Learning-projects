@@ -1,3 +1,2 @@
- // temp = players[i];
-            // players[i] = players[j];
-            // players[j] = temp;
+  player players[MAXVALUE] = {
+        {"Bellingham", "Jude", 5, "Midfielder", 21, 18, 512}
