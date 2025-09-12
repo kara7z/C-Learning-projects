@@ -32,6 +32,14 @@ void SortByPosition(int *counter, player players[MAXVALUE]);
 
 void addPosition(int index, player players[MAXVALUE]);
 
+int averageAge(int *counter, player players[MAXVALUE]);
+
+void maxMinAge(int *counter, player players[MAXVALUE]);
+
+void sMoreXgoals(int *counter, player players[MAXVALUE]);
+
+void topScorer(int *counter, player players[MAXVALUE]);
+
 int main()
 {
 
@@ -232,11 +240,11 @@ int main()
                 case 0: // back
                     printf("wait...");
                     Sleep(500);
-                    modify0Choice = false;
+                    modifyStatus = false;
                     break;
                 }
-                break;
             }
+            break;
         case 4: // Delete Player from the list
             bool deleteStatus = true;
             while (deleteStatus)
@@ -380,7 +388,78 @@ int main()
 
             break;
         case 6: // Players Stats
-            
+            bool sStatus = true;
+
+            while (sStatus)
+            {
+                int show0Choice;
+                if (counter == 0)
+                {
+                    printf("\033[0;31m");
+                    printf("You need to add players, no player founded");
+                    printf("\033[0m\n");
+                    sStatus = false;
+                }
+                else
+                {
+
+                    printf("1.Show the total number of players in the squad\n");
+                    printf("2.Show the average age of the players\n");
+                    printf("3.Show the players who have scored more than X goals (X:You need to choose it) \n");
+                    printf("4.Show the top scorer\n");
+                    printf("5.Show the youngest and oldest players.\n");
+                    printf("0.back\n");
+
+                    printf("\033[1;33m");
+                    printf("Your Choice is: ");
+                    printf("\033[0m");
+
+                    scanf("%d", &show0Choice);
+                    getchar();
+                    switch (show0Choice)
+                    {
+                    case 1:
+                        printf("\033[0;36m");
+                        printf("There are %d players\n", counter);
+                        printf("\033[0m");
+
+                        sStatus = false;
+                        break;
+                    case 2:
+                        int avgAge = averageAge(&counter, players);
+
+                        printf("\033[0;36m");
+                        printf("The average age of players is: %d\n", avgAge);
+                        printf("\033[0m");
+
+                        sStatus = false;
+                        break;
+                    case 3:
+                        sMoreXgoals(&counter, players);
+                        sStatus = false;
+
+                        break;
+                    case 4:
+                        topScorer(&counter, players);
+                        sStatus = false;
+
+                        break;
+                    case 5:
+
+                        maxMinAge(&counter, players);
+                        sStatus = false;
+
+                        break;
+                    case 0:
+                        printf("wait...");
+                        Sleep(500);
+                        sStatus = false;
+                        break;
+                    }
+                }
+            }
+
+            break;
 
             break;
         case 0: // Exit the program
@@ -583,6 +662,115 @@ int nameSearch(int *counter, player players[MAXVALUE])
             return -1;
         }
         isSearching = false;
+    }
+}
+int averageAge(int *counter, player players[MAXVALUE])
+{
+    int sum = 0;
+    for (int i = 0; i < *counter; i++)
+    {
+        sum += players[i].age;
+    }
+    return sum / (*counter);
+}
+void sMoreXgoals(int *counter, player players[MAXVALUE])
+{
+    bool goalStatus = true;
+    while (goalStatus)
+    {
+        int goalsNumbers;
+
+        int numberChecker = true;
+        while (numberChecker)
+        {
+            printf("Enter the X number: ");
+            scanf("%d", &goalsNumbers);
+            getchar();
+            if (goalsNumbers <= 1000 && goalsNumbers > 0)
+            {
+                numberChecker = false;
+            }
+            else
+            {
+                printf("Enter the X number: ");
+                scanf("%d", &goalsNumbers);
+                getchar();
+            }
+        }
+
+        bool exist = false;
+        for (int i = 0; i < *counter; i++)
+        {
+            if (players[i].goalsNum >= goalsNumbers)
+            {
+                printf("%s %s, Goals: %d\n", players[i].fName, players[i].name, players[i].goalsNum);
+                exist = true;
+                goalStatus = false;
+            }
+        }
+        if (exist == false)
+        {
+            printf("\nNO player has scored %d goals in this list\n", goalsNumbers);
+            goalStatus = false;
+        }
+    }
+}
+void topScorer(int *counter, player players[MAXVALUE])
+{
+    int maxGoals = 0;
+
+    for (int i = 0; i < *counter; i++)
+    {
+        maxGoals = (maxGoals < players[i].goalsNum) ? players[i].goalsNum : maxGoals;
+    }
+    printf("---Top Scorer---\n");
+    for (int i = 0; i < *counter; i++)
+    {
+        if (players[i].goalsNum == maxGoals)
+        {
+
+            printf("%s %s, %d Goals\n", players[i].fName, players[i].name, players[i].goalsNum);
+        }
+    }
+}
+void maxMinAge(int *counter, player players[MAXVALUE])
+{
+
+    int maxAge = players[0].age;
+    int minAge = players[0].age;
+
+    for (int i = 1; i < *counter; i++)
+    {
+
+        if (players[i].age < minAge)
+        {
+            minAge = players[i].age;
+        }
+        if (players[i].age > maxAge)
+        {
+            maxAge = players[i].age;
+        }
+    };
+    printf("\033[0;35m");
+    printf("\n---Youngest Player---");
+    printf("\033[0m\n");
+    for (int i = 0; i < *counter; i++)
+    {
+        if (players[i].age == minAge)
+        {
+            printf("%s %s, %d years\n", players[i].fName, players[i].name, players[i].age);
+        }
+    }
+    printf("\033[0;35m");
+    printf("\n---Oldest Player---");
+    printf("\033[0m\n");
+
+    for (int i = 0; i < *counter; i++)
+    {
+        if (players[i].age == maxAge)
+        {
+            printf("%s %s, %d years\n", players[i].fName, players[i].name, players[i].age);
+        }
     }
 }
 void idgenerator(int *playerId)
