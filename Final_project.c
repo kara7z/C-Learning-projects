@@ -22,7 +22,7 @@ void idgenerator(int *playerId); // fonction of ID maker
 
 int idSearch(int *counter, player players[MAXVALUE]); // fonction of searching for players
 
-int nameSearch(int *counter, player players[MAXVALUE]);
+int nameSearch(int *counter, player players[MAXVALUE], int founded[MAXVALUE]);
 
 void SortByName(int *counter, player players[MAXVALUE]);
 
@@ -361,16 +361,23 @@ int main()
             }
             else if (search0Choice == 2)
             {
-                int index = nameSearch(&counter, players);
-                if (index != -1)
+                int founded[MAXVALUE];
+                int matches = nameSearch(&counter, players, founded);
+                if (matches > 0)
+
                 {
-                    printf("\033[0;35m");
-                    printf("\n%d.%s %s\n", players[index].plyrNumber, players[index].name, players[index].fName);
-                    printf("\033[0m");
-                    printf("Player-ID is: %d\n", players[index].Id);
-                    printf("Player-Age is: %d\n", players[index].age);
-                    printf("Player-Position is: %s\n", players[index].position);
-                    printf("Player-Score %d Goals\n", players[index].goalsNum);
+                    for (int i = 0; i < matches; i++)
+                    {
+                        int index = founded[i];
+                        printf("\033[0;35m");
+                        printf("\n%d.%s %s\n", players[index].plyrNumber, players[index].name, players[index].fName);
+                        printf("\033[0m");
+
+                        printf("Player-ID is: %d\n", players[index].Id);
+                        printf("Player-Age is: %d\n", players[index].age);
+                        printf("Player-Position is: %s\n", players[index].position);
+                        printf("Player-Score %d Goals\n", players[index].goalsNum);
+                    }
                 }
             }
             else if (search0Choice == 0)
@@ -632,7 +639,7 @@ int idSearch(int *counter, player players[MAXVALUE])
         isSearching = false;
     }
 }
-int nameSearch(int *counter, player players[MAXVALUE])
+int nameSearch(int *counter, player players[MAXVALUE], int founded[MAXVALUE])
 {
     char nSearch0Value[MAXVALUE];
     bool isSearching = true;
@@ -644,22 +651,26 @@ int nameSearch(int *counter, player players[MAXVALUE])
         fgets(nSearch0Value, sizeof(nSearch0Value), stdin);
         nSearch0Value[strlen(nSearch0Value) - 1] = '\0';
 
-        bool nNotFounded = false;
+        int fCounter = 0;
 
         for (int i = 0; i < *counter; i++)
         {
             if (strcasecmp(nSearch0Value, players[i].name) == 0)
             {
-                nNotFounded = true;
-                return i;
+                founded[fCounter] = i;
+                fCounter++;
             }
         }
-        if (!nNotFounded)
+        if (fCounter == 0)
         {
             printf("\033[0;31m");
             printf("The player name was not founded in the list");
             printf("\033[0m\n");
-            return -1;
+            return 0;
+        }
+        else
+        {
+            return fCounter;
         }
         isSearching = false;
     }
@@ -792,10 +803,10 @@ void addPosition(int index, player players[MAXVALUE])
     {
 
         printf("\nFor choosing the player position press:\n");
-        printf("\"G\" for the goalkeeper\n");
-        printf("\"D\" for the defender\n");
-        printf("\"M\" for the midfielder\n");
-        printf("\"A\" for the Attacker\n");
+        printf("- \"G\" for the goalkeeper\n");
+        printf("- \"D\" for the defender\n");
+        printf("- \"M\" for the midfielder\n");
+        printf("- \"A\" for the Attacker\n");
         printf("\033[1;33m");
         printf("Your Choice is: ");
         printf("\033[0m");
@@ -857,10 +868,28 @@ void addPlayer(int *counter, player players[MAXVALUE], bool *PlyrNumChecker)
         bool PlyrNumChecker = true;
         while (PlyrNumChecker)
         {
+            bool alreadyTaken = false;
+            
+            for (int i = 0; i < *counter; i++)
+            {
+                if (players[i].plyrNumber == players[*counter].plyrNumber)
+                {
+                    alreadyTaken = true;
+                    break;
+                }
+            }
             if (players[*counter].plyrNumber > 100 || players[*counter].plyrNumber < 0)
             {
                 printf("\033[0;31m");
                 printf("Error the number must be between (1-100)!! : ");
+                printf("\033[0m");
+                scanf("%d", &players[*counter].plyrNumber);
+                getchar();
+            }
+            else if (alreadyTaken)
+            {
+                printf("\033[0;31m");
+                printf("Error: this number is already taken by another player!! : ");
                 printf("\033[0m");
                 scanf("%d", &players[*counter].plyrNumber);
                 getchar();
