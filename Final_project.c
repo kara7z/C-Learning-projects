@@ -238,6 +238,83 @@ int main()
                 break;
             }
         case 4: // Delete Player from the list
+            bool deleteStatus = true;
+            while (deleteStatus)
+            {
+                int delete0Choice;
+                printf("1.Delete Player by ID\n");
+                printf("0.back\n");
+
+                printf("\033[1;33m");
+                printf("Your Choice is: ");
+                printf("\033[0m");
+
+                scanf("%d", &delete0Choice);
+                getchar();
+
+                switch (delete0Choice)
+                {
+                case 1:
+
+                    int index = idSearch(&counter, players);
+
+                    if (index != -1)
+                    {
+                        char player0Choice;
+
+                        printf("\033[0;35m");
+                        printf("\n%d.%s %s\n", players[index].plyrNumber, players[index].name, players[index].fName);
+                        printf("\033[0m");
+                        printf("Player-Position is: %s\n", players[index].position);
+                        printf("\nIf you want to delete this player\n");
+                        printf("- Press \"Y\" to delete\n");
+                        printf("- Press \"N\" for back\n");
+                        printf("\033[1;33m");
+                        printf("\nYour Choice is: ");
+                        printf("\033[0m");
+
+                        scanf("%c", &player0Choice);
+                        getchar();
+
+                        if (player0Choice == 'Y' || player0Choice == 'y')
+                        {
+                            for (int i = index; i < counter; i++)
+                            {
+                                players[i] = players[i + 1];
+                            }
+                            counter--;
+                            printf("\033[32m");
+                            printf("This player has been deleted successfully");
+                            printf("\033[0m");
+                        }
+                        else if (player0Choice == 'N' || player0Choice == 'n')
+                        {
+                            printf("wait...");
+                            Sleep(500);
+                            delete0Choice = false;
+                            break;
+                        }
+
+                        else
+                        {
+                            printf("You enter wrong answer");
+                            Sleep(500);
+                            delete0Choice = false;
+                            break;
+                        }
+                    }
+
+                    break;
+
+                case 0: // back
+                    printf("wait...");
+                    Sleep(500);
+                    delete0Choice = false;
+                    break;
+                }
+                break;
+            }
+
             break;
         case 5: // Search for Player
             int search0Choice;
@@ -303,6 +380,8 @@ int main()
 
             break;
         case 6: // Players Stats
+            
+
             break;
         case 0: // Exit the program
             printf("exiting the program...");
