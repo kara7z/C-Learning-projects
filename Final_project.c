@@ -17,7 +17,7 @@ typedef struct
 
 } player;
 
-void addPlayer(int *counter, player players[MAXVALUE], bool *PlyrNumChecker); // fonction of adding players
+void addPlayer(int *counter, player players[MAXVALUE]); // fonction of adding players
 
 void idgenerator(int *playerId); // fonction of ID maker
 
@@ -42,7 +42,6 @@ void sMoreXgoals(int *counter, player players[MAXVALUE]);
 void topScorer(int *counter, player players[MAXVALUE]);
 
 void playerStatus(int *index, player players[MAXVALUE]);
-
 
 int main()
 {
@@ -105,7 +104,7 @@ int main()
                 getchar();
                 if (addChoice == 1)
                 {
-                    addPlayer(&counter, players, &PlyrNumChecker);
+                    addPlayer(&counter, players);
                     break;
                 }
                 else if (addChoice == 2)
@@ -117,7 +116,7 @@ int main()
                     getchar();
                     for (int i = 0; i < Quantity0a; i++)
                     {
-                        addPlayer(&counter, players, &PlyrNumChecker);
+                        addPlayer(&counter, players);
                     }
                 }
                 else if (addChoice == 0)
@@ -242,8 +241,7 @@ int main()
                         printf("\n%d.%s %s\n", players[index].plyrNumber, players[index].name, players[index].fName);
                         printf("\033[0m");
                         printf("Current status: %s\n", players[index].status);
-                        playerStatus(&index,players);
-
+                        playerStatus(&index, players);
                     }
                     break;
                 case 4: // Modify goals numbers
@@ -872,7 +870,7 @@ void addPosition(int index, player players[MAXVALUE])
         }
     }
 }
-void addPlayer(int *counter, player players[MAXVALUE], bool *PlyrNumChecker)
+void addPlayer(int *counter, player players[MAXVALUE])
 {
     char position1[] = "Goalkeeper";
     char position2[] = "Defender";
@@ -891,8 +889,8 @@ void addPlayer(int *counter, player players[MAXVALUE], bool *PlyrNumChecker)
         printf("Enter number of this player: ");
         scanf("%d", &players[*counter].plyrNumber);
         getchar();
-        bool PlyrNumChecker = true;
-        while (PlyrNumChecker)
+        bool lPlyrNumChecker = true;
+        while (lPlyrNumChecker)
         {
             bool alreadyTaken = false;
 
@@ -922,7 +920,7 @@ void addPlayer(int *counter, player players[MAXVALUE], bool *PlyrNumChecker)
             }
             else
             {
-                PlyrNumChecker = false;
+                lPlyrNumChecker = false;
             }
         }
         addPosition(*counter, players);
